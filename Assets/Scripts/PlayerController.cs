@@ -10,10 +10,10 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
-    // Future stats (uncomment when ready to use)
-    // private int score = 0;
-    // private int maxHealth = 100;
-    // private int currentHealth;
+    //Future stats
+    //private int score = 0;
+    //private int maxHealth = 100;
+    //private int currentHealth;
 
     void Start()
     {
@@ -21,28 +21,26 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Future: Initialize health
-        // currentHealth = maxHealth;
+        //Future: Initialize health
+        //currentHealth = maxHealth;
     }
 
     void Update()
     {
-        // Get WASD input
         float moveX = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right arrows
         float moveY = Input.GetAxisRaw("Vertical");   // W/S or Up/Down arrows
 
         moveInput = new Vector2(moveX, moveY).normalized;
 
-        // Update animations based on movement
         UpdateAnimations();
 
-        // Future: Add shooting input here
-        // if (Input.GetMouseButtonDown(0)) { Shoot(); }
+        //Future: Add shooting input here
+        //if (Input.GetMouseButtonDown(0)) { Shoot(); }
     }
 
     void FixedUpdate()
     {
-        // Move the player
+        //Move the player
         rb.linearVelocity = moveInput * moveSpeed;
     }
 
@@ -51,16 +49,15 @@ public class PlayerController : MonoBehaviour
         bool isMoving = moveInput.magnitude > 0;
         animator.SetBool("WalkRight", isMoving);
 
-        // Flip sprite based on movement direction
+        //Flip sprite based on movement direction
         if (moveInput.x > 0)
         {
-            spriteRenderer.flipX = false; // Face right
+            spriteRenderer.flipX = false; //Face right
         }
         else if (moveInput.x < 0)
         {
-            spriteRenderer.flipX = true;  // Face left
+            spriteRenderer.flipX = true;  //Face left
         }
-        // If moving only vertically or not moving, keep current direction
     }
 
     // Future methods to implement:
