@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
+    //collision
+    public LayerMask solidObjectsLayer;
+
     //Future stats
     //private int score = 0;
     //private int maxHealth = 100;
@@ -39,9 +42,28 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate()
+    {   
+        // //Move the player
+        // rb.linearVelocity = moveInput * moveSpeed;
+        if (moveInput != Vector2.zero)
     {
-        //Move the player
-        rb.linearVelocity = moveInput * moveSpeed;
+        //Predict the next position
+        Vector2 nextPos = rb.position + moveInput * moveSpeed * Time.fixedDeltaTime;
+
+        //Only move if the next position is walkable
+        if (isWalkable(nextPos))
+        {
+            rb.linearVelocity = moveInput * moveSpeed;
+        }
+        else
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+    else
+    {
+        rb.linearVelocity = Vector2.zero;
+    }
     }
 
     void UpdateAnimations()
@@ -58,6 +80,13 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.flipX = true;  //Face left
         }
+    }
+
+    //collision
+    private bool isWalkable(Vector3 targetPos)
+    {
+        //Check if the target position collides with anything on the solidObjectsLayer
+        return Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer) == null;
     }
 
     // Future methods to implement:
