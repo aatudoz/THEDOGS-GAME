@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302680660039966546}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.9659258, y: 0, z: 0.2588191, w: 0}
   m_LocalPosition: {x: -0.70613, y: 1.39795, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 150, z: 180}
 --- !u!212 &3012588319603018233
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -78,10 +78,10 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1991225997
+  m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 461687214592687322, guid: b8d21931bd4ed324d97a77f0059a899d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b8d21931bd4ed324d97a77f0059a899d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd46850077f093439f1e0c3560b848e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
-  speed: 300
+  speed: 13
 --- !u!58 &2741589353456481220
 CircleCollider2D:
   m_ObjectHideFlags: 0
