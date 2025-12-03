@@ -14,10 +14,19 @@ public class PlayerHealth : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    //ui manager
+    private UIManager uiManager;
+
     void Start()
     {
         currentHealth = maxHealth;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        //hakee ui managerin
+        uiManager = FindFirstObjectByType<UIManager>();
+
+        //paivita sydamet alussa
+        uiManager.UpdateHearts(currentHealth);
     }
 
     void Update()
@@ -42,6 +51,9 @@ public class PlayerHealth : MonoBehaviour
         if (isInvincible) return;
 
         currentHealth -= damage;
+        //paivita sydamet
+        uiManager.UpdateHearts(currentHealth);
+
 
         if (currentHealth <= 0)
         {
@@ -57,8 +69,11 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        // UI tähän, nyt  reloadaa scenen 5 framen jälkeen
-        Invoke("ReloadScene", 5f);
+        // UI tï¿½hï¿½n, nyt  reloadaa scenen 5 framen jï¿½lkeen
+        // Invoke("ReloadScene", 5f);
+
+        //nayttaa deathscreenin uimanagerin kautta
+        uiManager.ShowDeathScreen();
     }
 
     void ReloadScene()

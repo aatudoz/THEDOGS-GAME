@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Collision")]
     [SerializeField] private LayerMask solidObjectsLayer;
+
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -129,16 +131,49 @@ public class EnemyController : MonoBehaviour
     }
 
     void Die()
-    {
+    {   
+        if (isDead) return;
+        
         isDead = true;
         rb.linearVelocity = Vector2.zero;
+
+
         animator.SetTrigger("deathTrigger");
+
+        //pisteet pamahtaa naytolle
+        // if (floatingTextPrefab != null)
+        // {
+        //     GameObject floatingText = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+        //     floatingText.GetComponent<FloatingScore>().SetText("+150");
+        // }
+
+        //scorenlisays
+        StartCoroutine(AddScoreWithDelay(0.3f, 150));
+
+        //pisteet pamahtaa naytolle kiitos
+        UIManager uiManager = FindFirstObjectByType<UIManager>();
+        if (uiManager != null)
+        {
+            uiManager.ShowFloatingScore(transform.position, 150);
+        }
 
         // Disabling enemy collider so turkey can walk through
         GetComponent<Collider2D>().enabled = false;
 
         // Destroy after death animation
         Destroy(gameObject, 2f);
+    }
+
+    //delay scoreen
+    private IEnumerator AddScoreWithDelay(float delay, int scoreAmount)
+    {
+        yield return new WaitForSeconds(delay);
+
+        UIManager uiManager = FindFirstObjectByType<UIManager>();
+        if (uiManager != null)
+        {
+            uiManager.AddScore(scoreAmount);
+        }
     }
 
     private bool IsWalkable(Vector3 targetPos)
