@@ -9,8 +9,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackCooldown = 1f;
 
     [Header("Combat")]
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int attackDamage = 10;
+    [SerializeField] private int maxHealth = 10;
+    [SerializeField] private int attackDamage = 1;
 
     [Header("Collision")]
     [SerializeField] private LayerMask solidObjectsLayer;
@@ -23,7 +23,6 @@ public class EnemyController : MonoBehaviour
     private int currentHealth;
     private float lastAttackTime;
     private bool isDead = false;
-    private bool isAttacking = false;
 
     void Start()
     {
@@ -36,24 +35,24 @@ public class EnemyController : MonoBehaviour
     }
 
     void Update()
-{
-    if (isDead) return;
-    
-    if (player == null) return;
-    
-    float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-    
-    // In attack range
-    if (distanceToPlayer <= attackRange && Time.time >= lastAttackTime + attackCooldown)
     {
-        Attack();
+        if (isDead) return;
+
+        if (player == null) return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        // In attack range!!
+        if (distanceToPlayer <= attackRange && Time.time >= lastAttackTime + attackCooldown)
+        {
+            Attack();
+        }
+        // Chase player if enemy cant attack
+        else if (distanceToPlayer <= detectionRange && distanceToPlayer > attackRange)
+        {
+            ChasePlayer();
+        }
     }
-    // In detection range but not attack range - chase player
-    else if (distanceToPlayer <= detectionRange && distanceToPlayer > attackRange)
-    {
-        ChasePlayer();
-    }
-}
 
     void ChasePlayer()
     {
@@ -69,7 +68,7 @@ public class EnemyController : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
         }
 
-        // Flip sprite based on direction
+        // Flip sprite
         if (direction.x > 0)
         {
             spriteRenderer.flipX = false;
@@ -88,7 +87,6 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("attackTrigger");
         lastAttackTime = Time.time;
 
-        // Face player during attack
         if (player.position.x > transform.position.x)
         {
             spriteRenderer.flipX = false;
@@ -99,21 +97,20 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // Call this from animation event at the point of attack contact
+    // Call this from animation event at the middle of attack animation
     public void DealDamage()
     {
+        if (player == null) return;
+
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer <= attackRange)
         {
-            // Deal damage to player here
-            // player.GetComponent<PlayerHealth>()?.TakeDamage(attackDamage);
+            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(attackDamage);
+            }
         }
-    }
-
-    // Call this from animation event when attack animation ends
-    public void AttackComplete()
-    {
-        isAttacking = false;
     }
 
     public void TakeDamage(int damage)
@@ -138,10 +135,10 @@ public class EnemyController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         animator.SetTrigger("deathTrigger");
 
-        // Disable collider so player can walk through
+        // Disabling enemy collider so turkey can walk through
         GetComponent<Collider2D>().enabled = false;
 
-        // Destroy after death animation (adjust time to match your animation length)
+        // Destroy after death animation
         Destroy(gameObject, 2f);
     }
 
@@ -150,7 +147,6 @@ public class EnemyController : MonoBehaviour
         return Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer) == null;
     }
 
-    // Optional: visualize detection and attack ranges in editor
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

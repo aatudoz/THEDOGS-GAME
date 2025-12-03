@@ -2,12 +2,27 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 20f;
+    [SerializeField] private int damage = 3;
 
     void Update()
     {
         //Move bullet
         transform.position += transform.right * speed * Time.deltaTime;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        //Hit enemy
+        if (other.CompareTag("Enemy"))
+        {
+            EnemyController enemy = other.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+            Destroy(gameObject);
+        }
     }
 
     void OnBecameInvisible()
