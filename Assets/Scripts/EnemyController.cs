@@ -36,30 +36,24 @@ public class EnemyController : MonoBehaviour
     }
 
     void Update()
+{
+    if (isDead) return;
+    
+    if (player == null) return;
+    
+    float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+    
+    // In attack range
+    if (distanceToPlayer <= attackRange && Time.time >= lastAttackTime + attackCooldown)
     {
-        if (isDead || isAttacking) return;
-
-        if (player == null) return;
-
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        // In attack range
-        if (distanceToPlayer <= attackRange && Time.time >= lastAttackTime + attackCooldown)
-        {
-            Attack();
-        }
-        // In detection range but not attack range - chase player
-        else if (distanceToPlayer <= detectionRange && distanceToPlayer > attackRange)
-        {
-            ChasePlayer();
-        }
-        else
-        {
-            // Idle
-            rb.linearVelocity = Vector2.zero;
-            animator.SetFloat("speed", 0);
-        }
+        Attack();
     }
+    // In detection range but not attack range - chase player
+    else if (distanceToPlayer <= detectionRange && distanceToPlayer > attackRange)
+    {
+        ChasePlayer();
+    }
+}
 
     void ChasePlayer()
     {
@@ -90,7 +84,6 @@ public class EnemyController : MonoBehaviour
 
     void Attack()
     {
-        isAttacking = true;
         rb.linearVelocity = Vector2.zero;
         animator.SetTrigger("attackTrigger");
         lastAttackTime = Time.time;
