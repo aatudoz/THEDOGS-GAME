@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviour
     private int currentHealth;
 
     [Header("Invincibility")]
-    [SerializeField] private float invincibilityDuration = 3f;
+    [SerializeField] private float invincibilityDuration = 2f;
     private float invincibilityTimer = 0f;
     private bool isInvincible = false;
 
@@ -35,7 +35,7 @@ public class PlayerHealth : MonoBehaviour
         {
             invincibilityTimer -= Time.deltaTime;
 
-            //Flicker effect (DOESNT WORK)
+            //Flicker effect
             spriteRenderer.enabled = (Time.time * 10) % 2 < 1;
 
             if (invincibilityTimer <= 0)
@@ -69,16 +69,8 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        // UI t�h�n, nyt  reloadaa scenen 5 framen j�lkeen
-        // Invoke("ReloadScene", 5f);
-
         //nayttaa deathscreenin uimanagerin kautta
         uiManager.ShowDeathScreen();
-    }
-
-    void ReloadScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public int GetCurrentHealth()
