@@ -47,7 +47,7 @@ public class EnemyController : MonoBehaviour
         {
             Attack();
         }
-        // Chase player if enemy cant attack
+        //Chase player if enemy cant attack
         else if (distanceToPlayer <= detectionRange && distanceToPlayer > attackRange)
         {
             ChasePlayer();
@@ -97,7 +97,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // Call this from animation event at the middle of attack animation
     public void DealDamage()
     {
         if (player == null) return;

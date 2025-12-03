@@ -16,7 +16,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        // Aim at mouse
+        //Aim at mouse
         Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = mouse - transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -41,7 +41,7 @@ public class Gun : MonoBehaviour
             );
         }
 
-        // Shoot
+        //Shoot
         if (Input.GetMouseButtonDown(0))
         {
             Instantiate(bulletPrefab, muzzle.position, transform.rotation);

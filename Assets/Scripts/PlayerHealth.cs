@@ -57,7 +57,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        // UI tähän, nyt aloittaa reloadscenen 5 sekunnin jälkeen
+        // UI tähän, nyt  reloadaa scenen 5 framen jälkeen
         Invoke("ReloadScene", 5f);
     }
 
