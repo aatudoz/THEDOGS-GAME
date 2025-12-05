@@ -17,6 +17,8 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private UIManager uiManager;
 
+    [SerializeField] Transform[] spawnPoints;
+
 
     int wave = 0;
     int spawned = 0;
@@ -55,6 +57,10 @@ public class WaveManager : MonoBehaviour
     {
         wave++;
 
+        //show wave number ui
+        if (uiManager != null)
+        uiManager.ShowWave(wave);
+
         if (wave > 3)
         {
             Debug.Log("Game finished!");
@@ -92,24 +98,34 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    // void SpawnOne()
+    // {
+    //     if (player == null) return;
+
+    //     Vector2 dir = Random.insideUnitCircle.normalized;
+    //     Vector3 pos = player.position + (Vector3)(dir * spawnDist);
+
+    //     GameObject pick = PickEnemy();
+    //     if (pick == null) return;
+
+    //     GameObject e = Instantiate(pick, pos, Quaternion.identity);
+    //     alive++;
+
+    //     var ec = e.GetComponent<EnemyController>();
+    //     if (ec != null)
+    //     {
+    //         ec.OnEnemyDeath += OnEnemyKilled;
+    //     }
+    // }
+
     void SpawnOne()
     {
-        if (player == null) return;
+        Transform p = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        Vector2 dir = Random.insideUnitCircle.normalized;
-        Vector3 pos = player.position + (Vector3)(dir * spawnDist);
+        GameObject e = Instantiate(PickEnemy(), p.position, Quaternion.identity);
 
-        GameObject pick = PickEnemy();
-        if (pick == null) return;
-
-        GameObject e = Instantiate(pick, pos, Quaternion.identity);
         alive++;
-
-        var ec = e.GetComponent<EnemyController>();
-        if (ec != null)
-        {
-            ec.OnEnemyDeath += OnEnemyKilled;
-        }
+        e.GetComponent<EnemyController>().OnEnemyDeath += OnEnemyKilled;
     }
 
     void SpawnBoss()

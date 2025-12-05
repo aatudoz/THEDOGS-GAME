@@ -29,6 +29,16 @@ public class UIManager : MonoBehaviour
 
     public TMP_Text floatingScoreText;
 
+    [Header("Wave UI")]
+    public TMP_Text waveText;
+
+    //wave number
+    public void ShowWave(int waveNumber)
+    {   
+        waveText.gameObject.SetActive(true);
+        waveText.text = waveNumber.ToString();
+    }
+
     //resume nappula
     public void OnGameResumePress()
     {
