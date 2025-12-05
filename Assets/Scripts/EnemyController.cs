@@ -1,16 +1,17 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class EnemyController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float detectionRange = 8f;
-    [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private float moveSpeed = 3.9f;
+    [SerializeField] private float detectionRange = 100f;
+    [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 1f;
 
     [Header("Combat")]
-    [SerializeField] private int maxHealth = 10;
+    [SerializeField] private int maxHealth = 9;
     [SerializeField] private int attackDamage = 1;
 
     [Header("Collision")]
@@ -26,6 +27,7 @@ public class EnemyController : MonoBehaviour
     private float lastAttackTime;
     private bool isDead = false;
 
+    public event Action OnEnemyDeath;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -157,10 +159,13 @@ public class EnemyController : MonoBehaviour
             uiManager.ShowFloatingScore(transform.position, 150);
         }
 
-        // Disabling enemy collider so turkey can walk through
+        //Disabling enemy collider so turkey can walk through
         GetComponent<Collider2D>().enabled = false;
 
-        // Destroy after death animation
+        //Calls to WaveManager.cs
+        OnEnemyDeath?.Invoke();
+
+        //Destroy after death animation
         Destroy(gameObject, 2f);
     }
 

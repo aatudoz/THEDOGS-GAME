@@ -18,6 +18,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text deathScoreText;
     public TMP_Text victoryScoreText;
 
+    [Header("Wave Messages")]
+    public TMP_Text waveMessageText;
+
     public GameObject scoreUI;
 
     public GameObject pauseMenu;
@@ -157,7 +160,24 @@ public class UIManager : MonoBehaviour
         floatingScoreText.color = originalColor;
         floatingScoreText.gameObject.SetActive(false);
     }
-    
-    
+
+    //Wave texts
+    public void ShowWaveMessage(string message, float duration = 2f)
+    {
+        StartCoroutine(ShowWaveMessageRoutine(message, duration));
+    }
+
+    private IEnumerator ShowWaveMessageRoutine(string message, float duration)
+    {
+        if (waveMessageText == null) yield break;
+
+        waveMessageText.text = message;
+        waveMessageText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(duration);
+
+        waveMessageText.gameObject.SetActive(false);
+    }
+
 
 }
