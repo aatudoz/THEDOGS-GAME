@@ -164,6 +164,7 @@ MonoBehaviour:
   solidObjectsLayer:
     serializedVersion: 2
     m_Bits: 128
+  EnemyDamageSound: {fileID: 0}
 --- !u!58 &8494920739127973041
 CircleCollider2D:
   m_ObjectHideFlags: 0

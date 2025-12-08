@@ -6,6 +6,7 @@ public class Gun : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform muzzle;
+    [SerializeField] private AudioClip ShootSoundClip;
 
     private Vector3 originalScale;
 
@@ -45,6 +46,9 @@ public class Gun : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Instantiate(bulletPrefab, muzzle.position, transform.rotation);
+
+            //Play sound effect
+            SoundFXManager.Instance.PlaySoundFXClip(ShootSoundClip, transform, 1f);
         }
     }
 }

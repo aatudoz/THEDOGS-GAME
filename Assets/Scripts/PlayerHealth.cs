@@ -11,7 +11,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float invincibilityDuration = 2f;
     private float invincibilityTimer = 0f;
     private bool isInvincible = false;
-
+    [SerializeField] private AudioClip LoseSound;
+    [SerializeField] private AudioClip PlayerDamageSound;
     private SpriteRenderer spriteRenderer;
 
     //ui manager
@@ -53,6 +54,10 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damage;
         //paivita sydamet
         uiManager.UpdateHearts(currentHealth);
+        //Sound FX for damage taken
+        SoundFXManager.Instance.PlaySoundFXClip(PlayerDamageSound, transform, 1f);
+
+
 
 
         if (currentHealth <= 0)
@@ -71,6 +76,9 @@ public class PlayerHealth : MonoBehaviour
     {
         //nayttaa deathscreenin uimanagerin kautta
         uiManager.ShowDeathScreen();
+
+        //Sound FX
+        SoundFXManager.Instance.PlaySoundFXClip(LoseSound, transform, 1f);
     }
 
     public int GetCurrentHealth()

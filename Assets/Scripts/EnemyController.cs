@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Collision")]
     [SerializeField] private LayerMask solidObjectsLayer;
+    [SerializeField] private LayerMask ScoreAddSound;
 
 
     private Rigidbody2D rb;
@@ -122,6 +123,8 @@ public class EnemyController : MonoBehaviour
 
         currentHealth -= damage;
 
+       
+
         if (currentHealth <= 0)
         {
             Die();
@@ -152,12 +155,14 @@ public class EnemyController : MonoBehaviour
         //scorenlisays
         StartCoroutine(AddScoreWithDelay(0.3f, 150));
 
+       
         //pisteet pamahtaa naytolle kiitos
         UIManager uiManager = FindFirstObjectByType<UIManager>();
         if (uiManager != null)
         {
             uiManager.ShowFloatingScore(transform.position, 150);
         }
+        
 
         //Disabling enemy collider so turkey can walk through
         GetComponent<Collider2D>().enabled = false;
@@ -174,10 +179,11 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
+
         UIManager uiManager = FindFirstObjectByType<UIManager>();
         if (uiManager != null)
         {
-            uiManager.AddScore(scoreAmount);
+            uiManager.AddScore(scoreAmount); 
         }
     }
 
