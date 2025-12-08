@@ -164,7 +164,13 @@ MonoBehaviour:
   solidObjectsLayer:
     serializedVersion: 2
     m_Bits: 128
-  EnemyDamageSound: {fileID: 0}
+  ScoreAddSound:
+    serializedVersion: 2
+    m_Bits: 0
+  powerUps:
+  - {fileID: 6526481057980791372, guid: 0ab7546dcebdffe4eb42ca214ba3cec7, type: 3}
+  - {fileID: 1603506810593716980, guid: e449c75616c92c2438adce941db097b1, type: 3}
+  dropChance: 0.1
 --- !u!58 &8494920739127973041
 CircleCollider2D:
   m_ObjectHideFlags: 0
