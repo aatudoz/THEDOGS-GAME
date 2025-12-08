@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "PowerUps/SpeedBuff")]
 public class SpeedBuff : PowerUpEffect
@@ -8,6 +10,17 @@ public class SpeedBuff : PowerUpEffect
 
     public override void Apply(GameObject target)
     {
-        target.GetComponent<PlayerController>().moveSpeed += amount;
+        PlayerController pc = target.GetComponent<PlayerController>();
+        if (pc != null)
+        {
+            pc.StartCoroutine(ApplySpeedBoost(pc));
+        }
+    }
+
+    private IEnumerator ApplySpeedBoost(PlayerController pc)
+    {
+        pc.moveSpeed += amount;
+        yield return new WaitForSeconds(duration);
+        pc.moveSpeed -= amount; //palauta nopeus
     }
 }
