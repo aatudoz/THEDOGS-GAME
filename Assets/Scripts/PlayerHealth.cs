@@ -82,4 +82,12 @@ public class PlayerHealth : MonoBehaviour
     {
         return maxHealth;
     }
+
+
+    //add hp
+    public void AddHealth(int amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        uiManager.UpdateHearts(currentHealth);
+    }
 }

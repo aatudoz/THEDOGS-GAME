@@ -3,7 +3,7 @@
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] public float moveSpeed = 5f;
     [SerializeField] private float acceleration = 14f;
     [SerializeField] private float friction = 10f;
 

@@ -17,6 +17,11 @@ public class EnemyController : MonoBehaviour
     [Header("Collision")]
     [SerializeField] private LayerMask solidObjectsLayer;
 
+    //powerUps
+    [Header("PowerUp Drop")]
+    [SerializeField] private GameObject[] powerUps; //prefabs here
+    [SerializeField, Range(0f, 1f)] private float dropChance = 0.1f; //10% chance for drop
+
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -142,12 +147,10 @@ public class EnemyController : MonoBehaviour
 
         animator.SetTrigger("deathTrigger");
 
-        //pisteet pamahtaa naytolle
-        // if (floatingTextPrefab != null)
-        // {
-        //     GameObject floatingText = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
-        //     floatingText.GetComponent<FloatingScore>().SetText("+150");
-        // }
+        
+        //rng powerup drop
+        DropPowerUp();
+
 
         //scorenlisays
         StartCoroutine(AddScoreWithDelay(0.3f, 150));
@@ -193,5 +196,17 @@ public class EnemyController : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    private void DropPowerUp()
+    {
+        if (powerUps.Length == 0) return;
+
+        float roll = UnityEngine.Random.value;
+        if (roll <= dropChance)
+        {
+            int index = UnityEngine.Random.Range(0, powerUps.Length);
+            Instantiate(powerUps[index], transform.position, Quaternion.identity);
+        }
     }
 }
