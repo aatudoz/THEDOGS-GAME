@@ -26,6 +26,9 @@ public class UIManager : MonoBehaviour
 
     public GameObject scoreUI;
 
+    //ammo ui
+    public GameObject AmmoTextCount;
+
     public GameObject pauseMenu;
     public GameObject deathScreen;
     private bool isPaused = false;
@@ -140,6 +143,7 @@ public class UIManager : MonoBehaviour
     {
         scoreUI.SetActive(false);
         pauseMenu.SetActive(true);
+        AmmoTextCount.SetActive(false);
         Time.timeScale = 0f; //stoppaa pelin
         isPaused = true;
     }
@@ -147,6 +151,7 @@ public class UIManager : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
+        AmmoTextCount.SetActive(true);
         Time.timeScale = 1f; //jatkaa pelin
         isPaused = false;
         scoreUI.SetActive(true);
