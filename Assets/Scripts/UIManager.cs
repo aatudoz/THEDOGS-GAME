@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
     [Header("Wave Messages")]
     public TMP_Text waveMessageText;
 
+    [Header("Start Message")]
+    public TMP_Text startMessageText;
+
     public GameObject scoreUI;
 
     public GameObject pauseMenu;
@@ -32,9 +35,16 @@ public class UIManager : MonoBehaviour
     [Header("Wave UI")]
     public TMP_Text waveText;
 
+    [Header("Ammo UI")]
+    public TMP_Text ammoText;
+    public Image reloadImage; // The circular image for reload animation
+
+    private Gun playerGun; // Reference to the player's gun script
+    private float reloadStartTime;
+
     //wave number
     public void ShowWave(int waveNumber)
-    {   
+    {
         waveText.gameObject.SetActive(true);
         waveText.text = waveNumber.ToString();
     }
@@ -62,7 +72,19 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        playerGun = FindFirstObjectByType<Gun>();
+
+        if (playerGun == null)
+        {
+            Debug.LogError("UIManager could not find the Gun script. Ammo UI will not function.");
+        }
+
+        //Hide reload circle
+        if (reloadImage != null)
+        {
+            reloadImage.gameObject.SetActive(false);
+            reloadImage.fillAmount = 0f;
+        }
     }
 
     // Update is called once per frame
@@ -75,10 +97,53 @@ public class UIManager : MonoBehaviour
             else
                 PauseGame();
         }
+        if (playerGun != null)
+        {
+            UpdateAmmoUI(playerGun.currentMagAmmo, playerGun.MaxMagAmmo, playerGun.isReloading);
+        }
+    }
+
+    //From Gun.cs
+    private void UpdateAmmoUI(int currentAmmo, int maxAmmo, bool isReloading)
+    {
+        //Update Ammo Text
+        if (ammoText != null)
+        {
+            ammoText.text = $"{currentAmmo}/{maxAmmo}";
+        }
+
+        // 2. Control Reload Image Visibility and Animation
+        if (reloadImage != null)
+        {
+            if (isReloading)
+            {
+                // If we just started reloading, record the time
+                if (!reloadImage.gameObject.activeSelf)
+                {
+                    reloadImage.gameObject.SetActive(true);
+                    reloadStartTime = Time.time;
+                }
+
+                float timeSinceReload = Time.time - reloadStartTime;
+                float progress = timeSinceReload / playerGun.ReloadTime;
+
+                // Fill the circular image
+                reloadImage.fillAmount = progress;
+            }
+            else
+            {
+                // Reload finished or not reloading
+                if (reloadImage.gameObject.activeSelf)
+                {
+                    reloadImage.gameObject.SetActive(false);
+                    reloadImage.fillAmount = 0f;
+                }
+            }
+        }
     }
 
     public void PauseGame()
-    {   
+    {
         scoreUI.SetActive(false);
         pauseMenu.SetActive(true);
         Time.timeScale = 0f; //stoppaa pelin
@@ -93,18 +158,18 @@ public class UIManager : MonoBehaviour
         scoreUI.SetActive(true);
     }
     public void ShowDeathScreen()
-    {   
+    {
         scoreUI.SetActive(false);
         deathScreen.SetActive(true);
         Time.timeScale = 0f; //stoppaa pelin
         scoreUI.SetActive(false);
         if (deathScoreText != null)
-        deathScoreText.text = score.ToString();
+            deathScoreText.text = score.ToString();
     }
 
 
     public void TryAgain()
-    {   
+    {
         pauseMenu.SetActive(false);
         Time.timeScale = 1f; //jatkaa pelin
         isPaused = false;
@@ -187,6 +252,24 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         waveMessageText.gameObject.SetActive(false);
+    }
+
+    // Start message methods
+    public void ShowStartMessage(string message)
+    {
+        if (startMessageText != null)
+        {
+            startMessageText.text = message;
+            startMessageText.gameObject.SetActive(true);
+        }
+    }
+
+    public void HideStartMessage()
+    {
+        if (startMessageText != null)
+        {
+            startMessageText.gameObject.SetActive(false);
+        }
     }
 
 

@@ -27,6 +27,7 @@ public class WaveManager : MonoBehaviour
 
     bool waveGoing = false;
     bool bossDone = false;
+    bool gameStarted = false;
 
     int[] waveCounts = new int[] { 15, 30, 25 };
 
@@ -35,11 +36,22 @@ public class WaveManager : MonoBehaviour
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        StartCoroutine(StartWave());
+        // Show the start message
+        if (uiManager != null)
+            uiManager.ShowStartMessage("Press G to start!");
     }
 
     void Update()
     {
+        // Check if player presses G to start the game
+        if (!gameStarted && Input.GetKeyDown(KeyCode.G))
+        {
+            gameStarted = true;
+            if (uiManager != null)
+                uiManager.HideStartMessage();
+            StartCoroutine(StartWave());
+        }
+
         if (waveGoing && alive <= 0 && spawned >= toSpawn)
         {
             //if 3rd wave, spawn boss
@@ -59,7 +71,7 @@ public class WaveManager : MonoBehaviour
 
         //show wave number ui
         if (uiManager != null)
-        uiManager.ShowWave(wave);
+            uiManager.ShowWave(wave);
 
         if (wave > 3)
         {
