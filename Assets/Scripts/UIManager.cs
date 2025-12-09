@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text ammoText;
     public Image reloadImage; // The circular image for reload animation
 
-    private Gun playerGun; // Reference to the player's gun script
+    private Gun playerGun;
     private float reloadStartTime;
 
     //wave number
@@ -74,11 +74,6 @@ public class UIManager : MonoBehaviour
     {
         playerGun = FindFirstObjectByType<Gun>();
 
-        if (playerGun == null)
-        {
-            Debug.LogError("UIManager could not find the Gun script. Ammo UI will not function.");
-        }
-
         //Hide reload circle
         if (reloadImage != null)
         {
@@ -112,12 +107,12 @@ public class UIManager : MonoBehaviour
             ammoText.text = $"{currentAmmo}/{maxAmmo}";
         }
 
-        // 2. Control Reload Image Visibility and Animation
+        //Reload image visibility/animation
         if (reloadImage != null)
         {
             if (isReloading)
             {
-                // If we just started reloading, record the time
+                //Reload logic, thank internet
                 if (!reloadImage.gameObject.activeSelf)
                 {
                     reloadImage.gameObject.SetActive(true);
@@ -127,12 +122,11 @@ public class UIManager : MonoBehaviour
                 float timeSinceReload = Time.time - reloadStartTime;
                 float progress = timeSinceReload / playerGun.ReloadTime;
 
-                // Fill the circular image
                 reloadImage.fillAmount = progress;
             }
             else
             {
-                // Reload finished or not reloading
+                //Reload finished or not reloading
                 if (reloadImage.gameObject.activeSelf)
                 {
                     reloadImage.gameObject.SetActive(false);

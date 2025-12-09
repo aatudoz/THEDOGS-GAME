@@ -38,15 +38,14 @@ public class WaveManager : MonoBehaviour
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        // Find the MusicManager's AudioSource
         GameObject musicManager = GameObject.Find("MusicManager");
         if (musicManager != null)
         {
             musicAudioSource = musicManager.GetComponent<AudioSource>();
             if (musicAudioSource != null)
             {
-                musicAudioSource.volume = 0f; // Start at 0 volume for fade in
-                musicAudioSource.Play(); // Start playing but silent
+                musicAudioSource.volume = 0f;
+                musicAudioSource.Play(); 
             }
         }
 
