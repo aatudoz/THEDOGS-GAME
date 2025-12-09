@@ -19,6 +19,8 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] Transform[] spawnPoints;
 
+    private AudioSource musicAudioSource;
+    [SerializeField] private float musicFadeDuration = 10f;
 
     int wave = 0;
     int spawned = 0;
@@ -36,6 +38,18 @@ public class WaveManager : MonoBehaviour
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
+        // Find the MusicManager's AudioSource
+        GameObject musicManager = GameObject.Find("MusicManager");
+        if (musicManager != null)
+        {
+            musicAudioSource = musicManager.GetComponent<AudioSource>();
+            if (musicAudioSource != null)
+            {
+                musicAudioSource.volume = 0f; // Start at 0 volume for fade in
+                musicAudioSource.Play(); // Start playing but silent
+            }
+        }
+
         // Show the start message
         if (uiManager != null)
             uiManager.ShowStartMessage("Press G to start!");
@@ -49,6 +63,11 @@ public class WaveManager : MonoBehaviour
             gameStarted = true;
             if (uiManager != null)
                 uiManager.HideStartMessage();
+
+            // Start fading in the music
+            if (musicAudioSource != null)
+                StartCoroutine(FadeInMusic());
+
             StartCoroutine(StartWave());
         }
 
@@ -94,6 +113,22 @@ public class WaveManager : MonoBehaviour
         Debug.Log("Wave " + wave + " started! Spawning " + toSpawn);
 
         StartCoroutine(SpawnEnemies());
+    }
+
+    IEnumerator FadeInMusic()
+    {
+        float startVolume = 0f;
+        float targetVolume = 1f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < musicFadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            musicAudioSource.volume = Mathf.Lerp(startVolume, targetVolume, elapsedTime / musicFadeDuration);
+            yield return null;
+        }
+
+        musicAudioSource.volume = targetVolume;
     }
 
     IEnumerator SpawnEnemies()
