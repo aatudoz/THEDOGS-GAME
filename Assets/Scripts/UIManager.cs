@@ -29,6 +29,9 @@ public class UIManager : MonoBehaviour
     //ammo ui
     public GameObject AmmoTextCount;
 
+    //stargame ui thing
+    public GameObject StartGameUI;
+
     public GameObject pauseMenu;
     public GameObject deathScreen;
     private bool isPaused = false;
@@ -44,6 +47,9 @@ public class UIManager : MonoBehaviour
 
     private Gun playerGun;
     private float reloadStartTime;
+
+    //powerup text
+    public TextMeshProUGUI powerupText;
 
     //wave number
     public void ShowWave(int waveNumber)
@@ -160,6 +166,7 @@ public class UIManager : MonoBehaviour
     {
         scoreUI.SetActive(false);
         deathScreen.SetActive(true);
+        AmmoTextCount.SetActive(false);
         Time.timeScale = 0f; //stoppaa pelin
         scoreUI.SetActive(false);
         if (deathScoreText != null)
@@ -173,6 +180,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f; //jatkaa pelin
         isPaused = false;
         deathScreen.SetActive(false);
+        AmmoTextCount.SetActive(true);
 
         SceneManager.LoadScene("SampleScene");
     }
@@ -270,6 +278,24 @@ public class UIManager : MonoBehaviour
             startMessageText.gameObject.SetActive(false);
         }
     }
+
+    //po
+    public void ShowPowerupText(string msg, float duration)
+    {
+        StopAllCoroutines();
+        StartCoroutine(PowerupRoutine(msg, duration));
+    }
+
+    private IEnumerator PowerupRoutine(string msg, float duration)
+    {
+        powerupText.text = msg;
+        powerupText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(duration);
+
+        powerupText.gameObject.SetActive(false);
+    }
+
 
 
 }

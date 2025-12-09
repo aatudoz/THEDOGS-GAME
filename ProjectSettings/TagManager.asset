@@ -61,5 +61,8 @@ TagManager:
   - name: Gun
     uniqueID: 1991225997
     locked: 0
+  - name: PropsFrontOfPlayer
+    uniqueID: 3267946295
+    locked: 0
   m_RenderingLayers:
   - Default

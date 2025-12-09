@@ -18,7 +18,12 @@ public class SpeedBuff : PowerUpEffect
     }
 
     private IEnumerator ApplySpeedBoost(PlayerController pc)
-    {
+    {   
+        //ui
+        UIManager ui = Object.FindFirstObjectByType<UIManager>();
+        if (ui != null)
+            ui.ShowPowerupText("+Speed", duration);
+
         pc.moveSpeed += amount;
         yield return new WaitForSeconds(duration);
         pc.moveSpeed -= amount; //palauta nopeus
