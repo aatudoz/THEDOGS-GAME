@@ -1,9 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
+
+    [Header("UI")]
+    [SerializeField] private Image healthBarFill;
+
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3.9f;
     [SerializeField] private float detectionRange = 100f;
@@ -42,6 +47,7 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         currentHealth = maxHealth;
+        UpdateHealthBar();
     }
 
     void Update()
@@ -127,8 +133,7 @@ public class EnemyController : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
-
-       
+        UpdateHealthBar();
 
         if (currentHealth <= 0)
         {
@@ -137,6 +142,14 @@ public class EnemyController : MonoBehaviour
         else
         {
             animator.SetTrigger("hurtTrigger");
+        }
+    }
+
+    void UpdateHealthBar()
+    {
+        if (healthBarFill != null)
+        {
+            healthBarFill.fillAmount = (float)currentHealth / maxHealth;
         }
     }
 
