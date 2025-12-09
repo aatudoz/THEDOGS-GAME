@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
+
 // HUGE THANKS: https://www.youtube.com/watch?v=chIFtkuFnVw
+
 public class Gun : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
@@ -9,8 +11,13 @@ public class Gun : MonoBehaviour
     [Header("Ammo & Reload")]
     [SerializeField] private int maxMagAmmo = 12; //bullet capacity
     [SerializeField] private float reloadTime = 1.5f;
+    [Header("Fire Rate")]
+    [SerializeField] private float fireRate = 0.25f; //shooting delay
+
     [HideInInspector] public int currentMagAmmo;
     [HideInInspector] public bool isReloading = false;
+
+    private float nextFireTime = 0f;
     public int MaxMagAmmo => maxMagAmmo;
     public float ReloadTime => reloadTime;
     private Vector3 originalScale;
@@ -44,26 +51,29 @@ public class Gun : MonoBehaviour
             );
         }
 
-        //manual reload with R
+        //manual reload with R key
         if (Input.GetKeyDown(KeyCode.R))
         {
-            //only reload if not already reloading and magazine is not full
+            //reload if not reloading or mag is not full
             if (!isReloading && currentMagAmmo < maxMagAmmo)
             {
                 StartReload();
             }
         }
 
-        //Shoot logic modified
-        if (Input.GetMouseButtonDown(0))
+        //Shoot logic
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(0))
         {
-            if (!isReloading && currentMagAmmo > 0)
+            if (!isReloading && currentMagAmmo > 0 && Time.time >= nextFireTime)
             {
                 Instantiate(bulletPrefab, muzzle.position, transform.rotation);
-                currentMagAmmo--; // Decrease ammo
-                // Play sound effect
+                currentMagAmmo--; //Decrease ammo
+                //Play sound effect
                 SoundFXManager.Instance.PlaySoundFXClip(ShootSoundClip, transform, 1f);
-                //Auto-reload if magazine is now empty
+
+                nextFireTime = Time.time + fireRate;
+
+                //auto reload if magazine is now empty
                 if (currentMagAmmo == 0)
                 {
                     StartReload();

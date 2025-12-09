@@ -1,12 +1,24 @@
 using UnityEngine;
-
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed = 20f;
     [SerializeField] private int damage = 3;
+    [SerializeField] private float lifetime = 3f; //destroyed after 3s
+
+    void Start()
+    {
+        Destroy(gameObject, lifetime);
+    }
 
     void Update()
     {
+        //destroy bullet if game is paused
+        if (Time.timeScale == 0f)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         //Move bullet
         transform.position += transform.right * speed * Time.deltaTime;
     }
@@ -23,11 +35,5 @@ public class Bullet : MonoBehaviour
             }
             Destroy(gameObject);
         }
-    }
-
-    void OnBecameInvisible()
-    {
-        //Destroy bullet when it goes off screen
-        Destroy(gameObject);
     }
 }
