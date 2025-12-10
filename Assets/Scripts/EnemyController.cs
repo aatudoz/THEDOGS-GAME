@@ -95,8 +95,6 @@ public class EnemyController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-
-        animator.SetFloat("speed", rb.linearVelocity.magnitude);
     }
 
     void Attack()
