@@ -51,6 +51,10 @@ public class UIManager : MonoBehaviour
     //powerup text
     public TextMeshProUGUI powerupText;
 
+    //victory screen
+    public GameObject victoryScreen;
+    public TMP_Text VictoryScoreText;
+
     //wave number
     public void ShowWave(int waveNumber)
     {
@@ -173,6 +177,17 @@ public class UIManager : MonoBehaviour
             deathScoreText.text = score.ToString();
     }
 
+    public void ShowVictoryScreen()
+    {
+        scoreUI.SetActive(false);
+        victoryScreen.SetActive(true);
+        AmmoTextCount.SetActive(false);
+        Time.timeScale = 0f; //stoppaa pelin
+        scoreUI.SetActive(false);
+        if (victoryScoreText != null)
+            victoryScoreText.text = score.ToString();
+    }
+
 
     public void TryAgain()
     {
@@ -279,7 +294,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //po
+    //poweruptext
     public void ShowPowerupText(string msg, float duration)
     {
         StopAllCoroutines();
