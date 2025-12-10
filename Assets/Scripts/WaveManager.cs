@@ -17,6 +17,10 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private UIManager uiManager;
 
+    [SerializeField] Transform[] spawnPoints;
+
+    private AudioSource musicAudioSource;
+    [SerializeField] private float musicFadeDuration = 10f;
 
     int wave = 0;
     int spawned = 0;
@@ -25,6 +29,7 @@ public class WaveManager : MonoBehaviour
 
     bool waveGoing = false;
     bool bossDone = false;
+    bool gameStarted = false;
 
     int[] waveCounts = new int[] { 15, 30, 25 };
 
@@ -33,11 +38,39 @@ public class WaveManager : MonoBehaviour
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        StartCoroutine(StartWave());
+        // Find the MusicManager's AudioSource
+        GameObject musicManager = GameObject.Find("MusicManager");
+        if (musicManager != null)
+        {
+            musicAudioSource = musicManager.GetComponent<AudioSource>();
+            if (musicAudioSource != null)
+            {
+                musicAudioSource.volume = 0f; // Start at 0 volume for fade in
+                musicAudioSource.Play(); // Start playing but silent
+            }
+        }
+
+        // Show the start message
+        if (uiManager != null)
+            uiManager.ShowStartMessage("Press G to start!");
     }
 
     void Update()
     {
+        // Check if player presses G to start the game
+        if (!gameStarted && Input.GetKeyDown(KeyCode.G))
+        {
+            gameStarted = true;
+            if (uiManager != null)
+                uiManager.HideStartMessage();
+
+            // Start fading in the music
+            if (musicAudioSource != null)
+                StartCoroutine(FadeInMusic());
+
+            StartCoroutine(StartWave());
+        }
+
         if (waveGoing && alive <= 0 && spawned >= toSpawn)
         {
             //if 3rd wave, spawn boss
@@ -54,6 +87,10 @@ public class WaveManager : MonoBehaviour
     IEnumerator StartWave()
     {
         wave++;
+
+        //show wave number ui
+        if (uiManager != null)
+            uiManager.ShowWave(wave);
 
         if (wave > 3)
         {
@@ -78,6 +115,22 @@ public class WaveManager : MonoBehaviour
         StartCoroutine(SpawnEnemies());
     }
 
+    IEnumerator FadeInMusic()
+    {
+        float startVolume = 0f;
+        float targetVolume = 1f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < musicFadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            musicAudioSource.volume = Mathf.Lerp(startVolume, targetVolume, elapsedTime / musicFadeDuration);
+            yield return null;
+        }
+
+        musicAudioSource.volume = targetVolume;
+    }
+
     IEnumerator SpawnEnemies()
     {
         while (spawned < toSpawn)
@@ -92,24 +145,34 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    // void SpawnOne()
+    // {
+    //     if (player == null) return;
+
+    //     Vector2 dir = Random.insideUnitCircle.normalized;
+    //     Vector3 pos = player.position + (Vector3)(dir * spawnDist);
+
+    //     GameObject pick = PickEnemy();
+    //     if (pick == null) return;
+
+    //     GameObject e = Instantiate(pick, pos, Quaternion.identity);
+    //     alive++;
+
+    //     var ec = e.GetComponent<EnemyController>();
+    //     if (ec != null)
+    //     {
+    //         ec.OnEnemyDeath += OnEnemyKilled;
+    //     }
+    // }
+
     void SpawnOne()
     {
-        if (player == null) return;
+        Transform p = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        Vector2 dir = Random.insideUnitCircle.normalized;
-        Vector3 pos = player.position + (Vector3)(dir * spawnDist);
+        GameObject e = Instantiate(PickEnemy(), p.position, Quaternion.identity);
 
-        GameObject pick = PickEnemy();
-        if (pick == null) return;
-
-        GameObject e = Instantiate(pick, pos, Quaternion.identity);
         alive++;
-
-        var ec = e.GetComponent<EnemyController>();
-        if (ec != null)
-        {
-            ec.OnEnemyDeath += OnEnemyKilled;
-        }
+        e.GetComponent<EnemyController>().OnEnemyDeath += OnEnemyKilled;
     }
 
     void SpawnBoss()
