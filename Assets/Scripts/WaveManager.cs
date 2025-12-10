@@ -242,4 +242,10 @@ public class WaveManager : MonoBehaviour
     {
         return alive + (toSpawn - spawned);
     }
+
+    // public void Victory()
+    // {
+    //     if (uiManager != null)
+    //         uiManager.ShowVictoryScreen();
+    // }
 }

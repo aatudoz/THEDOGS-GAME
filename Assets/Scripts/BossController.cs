@@ -49,6 +49,10 @@ public class BossController : MonoBehaviour
 
     public event Action OnEnemyDeath;
 
+    private UIManager uiManager;
+
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -289,7 +293,7 @@ public class BossController : MonoBehaviour
 
         StartCoroutine(AddScoreWithDelay(0.3f, 150));
 
-        UIManager uiManager = FindFirstObjectByType<UIManager>();
+        uiManager = FindFirstObjectByType<UIManager>();
         if (uiManager != null)
         {
             uiManager.ShowFloatingScore(transform.position, 150);
@@ -300,6 +304,8 @@ public class BossController : MonoBehaviour
         OnEnemyDeath?.Invoke();
 
         Destroy(gameObject, 2f);
+
+        Victory();
     }
 
     private IEnumerator AddScoreWithDelay(float delay, int scoreAmount)
@@ -339,5 +345,10 @@ public class BossController : MonoBehaviour
             int index = UnityEngine.Random.Range(0, powerUps.Length);
             Instantiate(powerUps[index], transform.position, Quaternion.identity);
         }
+    }
+
+    public void Victory()
+    {
+            uiManager.ShowVictoryScreen();
     }
 }
