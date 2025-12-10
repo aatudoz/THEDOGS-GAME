@@ -95,19 +95,19 @@ public class BossController : MonoBehaviour
     void CheckForDashAttack()
     {
         //Dash at 40hp
-        if (currentHealth <= 40 && !hasUsedFirstDash)
+        if (currentHealth <= 25 && !hasUsedFirstDash)
         {
             hasUsedFirstDash = true;
             StartCoroutine(DoDashAttack());
         }
         //Dash at 23hp
-        else if (currentHealth <= 23 && !hasUsedSecondDash)
+        else if (currentHealth <= 15 && !hasUsedSecondDash)
         {
             hasUsedSecondDash = true;
             StartCoroutine(DoDashAttack());
         }
         //Dash at 10hp
-        else if (currentHealth <= 10 && !hasUsedThirdDash)
+        else if (currentHealth <= 6 && !hasUsedThirdDash)
         {
             hasUsedThirdDash = true;
             StartCoroutine(DoDashAttack());
@@ -234,6 +234,7 @@ public class BossController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
+        DealDamage();
     }
 
     public void DealDamage()
@@ -349,6 +350,12 @@ public class BossController : MonoBehaviour
 
     public void Victory()
     {
-            uiManager.ShowVictoryScreen();
+        StartCoroutine(VictoryDelay());
+    }
+    
+    private IEnumerator VictoryDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        uiManager.ShowVictoryScreen();
     }
 }

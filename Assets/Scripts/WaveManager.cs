@@ -31,7 +31,7 @@ public class WaveManager : MonoBehaviour
     bool bossDone = false;
     bool gameStarted = false;
 
-    int[] waveCounts = new int[] { 15, 30, 25 };
+    int[] waveCounts = new int[] { 40, 50, 20 };
 
     void Start()
     {
@@ -110,9 +110,14 @@ public class WaveManager : MonoBehaviour
         if (uiManager != null)
             uiManager.ShowWaveMessage("WAVE " + wave + " START!", 2f);
 
+
         Debug.Log("Wave " + wave + " started! Spawning " + toSpawn);
 
+
         StartCoroutine(SpawnEnemies());
+
+        if (uiManager != null)
+            uiManager.ShowWaveText();
     }
 
     IEnumerator FadeInMusic()

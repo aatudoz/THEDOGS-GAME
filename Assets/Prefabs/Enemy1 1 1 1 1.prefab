@@ -161,7 +161,7 @@ MonoBehaviour:
   detectionRange: 1000
   attackRange: 1
   attackCooldown: 1
-  maxHealth: 9
+  maxHealth: 1
   attackDamage: 1
   solidObjectsLayer:
     serializedVersion: 2

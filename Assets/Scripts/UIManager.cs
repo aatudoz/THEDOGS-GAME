@@ -41,6 +41,8 @@ public class UIManager : MonoBehaviour
     [Header("Wave UI")]
     public TMP_Text waveText;
 
+    public TMP_Text NewWaveText;
+
     [Header("Ammo UI")]
     public TMP_Text ammoText;
     public Image reloadImage; // The circular image for reload animation
@@ -297,7 +299,7 @@ public class UIManager : MonoBehaviour
     //poweruptext
     public void ShowPowerupText(string msg, float duration)
     {
-        StopAllCoroutines();
+        // StopAllCoroutines();
         StartCoroutine(PowerupRoutine(msg, duration));
     }
 
@@ -311,6 +313,22 @@ public class UIManager : MonoBehaviour
         powerupText.gameObject.SetActive(false);
     }
 
+    public void ShowWaveText()
+    {
+        if (waveText != null)
+        {
+            NewWaveText.gameObject.SetActive(true);
+            StartCoroutine(HideWaveTextAfterDelay(3f));
+        }
+    }
 
+    private IEnumerator HideWaveTextAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        if (NewWaveText != null)
+        {   
+            NewWaveText.gameObject.SetActive(false);
+        }
+    }
 
 }

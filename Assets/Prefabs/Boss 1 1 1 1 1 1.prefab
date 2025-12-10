@@ -272,7 +272,7 @@ MonoBehaviour:
   detectionRange: 100
   attackRange: 1.4
   attackCooldown: 1
-  maxHealth: 50
+  maxHealth: 20
   attackDamage: 1
   dashSpeed: 15
   dashDistance: 8
