@@ -57,7 +57,7 @@ public class EnemyController : MonoBehaviour
 
         if (player == null) return;
 
-        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y + 3f);
+        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y);
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
         // In attack range!!
@@ -119,7 +119,7 @@ public class EnemyController : MonoBehaviour
     {
         if (player == null) return;
 
-        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y + 3f);
+        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y);
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer <= attackRange)
         {
@@ -213,7 +213,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y + 1.2f);
+        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y);
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(attackPosition, detectionRange);
