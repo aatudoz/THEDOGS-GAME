@@ -95,8 +95,6 @@ public class EnemyController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-
-        animator.SetFloat("speed", rb.linearVelocity.magnitude);
     }
 
     void Attack()
@@ -113,13 +111,13 @@ public class EnemyController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
+        DealDamage();
     }
 
     public void DealDamage()
     {
         if (player == null) return;
 
-        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y);
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer <= attackRange)
         {
