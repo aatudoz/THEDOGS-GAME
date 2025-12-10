@@ -29,10 +29,16 @@ public class Bullet : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             EnemyController enemy = other.GetComponent<EnemyController>();
+            BossController boss = other.GetComponent<BossController>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
             }
+            if (boss != null) 
+            { 
+                boss.TakeDamage(damage);
+            }
+
             Destroy(gameObject);
         }
     }

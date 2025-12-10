@@ -41,6 +41,7 @@ public class EnemyController : MonoBehaviour
     public event Action OnEnemyDeath;
     void Start()
     {
+        
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -56,6 +57,7 @@ public class EnemyController : MonoBehaviour
 
         if (player == null) return;
 
+        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y + 3f);
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
         // In attack range!!
@@ -117,6 +119,7 @@ public class EnemyController : MonoBehaviour
     {
         if (player == null) return;
 
+        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y + 3f);
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer <= attackRange)
         {
@@ -210,11 +213,13 @@ public class EnemyController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y + 1.2f);
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.DrawWireSphere(attackPosition, detectionRange);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(attackPosition, attackRange);
     }
 
     private void DropPowerUp()
