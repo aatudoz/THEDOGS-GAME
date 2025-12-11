@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
     public GameObject deathScreen;
     private bool isPaused = false;
 
+    private bool startMessageWasVisibleBeforePause = false;
+
     public TMP_Text floatingScoreText;
 
     [Header("Wave UI")]
@@ -57,6 +59,8 @@ public class UIManager : MonoBehaviour
     //victory screen
     public GameObject victoryScreen;
     public TMP_Text VictoryScoreText;
+
+    public WaveManager waveManager;
 
     //wave number
     public void ShowWave(int waveNumber)
@@ -160,8 +164,22 @@ public class UIManager : MonoBehaviour
 
         waveText.gameObject.SetActive(false);
         waveWaveText.gameObject.SetActive(false);
+        
+        //startmsg
+        if (!waveManager.gameStarted)
+        {
+            startMessageWasVisibleBeforePause =
+                startMessageText != null &&
+                startMessageText.gameObject.activeSelf;
+
+            //piilota start message
+            if (startMessageText != null)
+                startMessageText.gameObject.SetActive(false);
+        }
+
         Time.timeScale = 0f; //stoppaa pelin
         isPaused = true;
+
     }
 
     public void ResumeGame()
@@ -170,6 +188,21 @@ public class UIManager : MonoBehaviour
         AmmoTextCount.SetActive(true);
         waveText.gameObject.SetActive(true);
         waveWaveText.gameObject.SetActive(true);
+        //startmsg
+        if (!waveManager.gameStarted && startMessageWasVisibleBeforePause)
+        {
+            if (startMessageText != null)
+                startMessageText.gameObject.SetActive(true);
+        }
+        else
+        {   
+            //hide
+            if (startMessageText != null)
+                startMessageText.gameObject.SetActive(false);
+        }
+
+
+
         Time.timeScale = 1f; //jatkaa pelin
         isPaused = false;
         scoreUI.SetActive(true);

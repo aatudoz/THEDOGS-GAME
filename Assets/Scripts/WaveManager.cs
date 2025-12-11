@@ -29,7 +29,7 @@ public class WaveManager : MonoBehaviour
 
     bool waveGoing = false;
     bool bossDone = false;
-    bool gameStarted = false;
+    public bool gameStarted = false;
 
     int[] waveCounts = new int[] { 30, 30, 15 };
 
@@ -52,7 +52,7 @@ public class WaveManager : MonoBehaviour
 
         // Show the start message
         if (uiManager != null)
-            uiManager.ShowStartMessage("Press G to start!");
+            uiManager.ShowStartMessage("Press G to start");
     }
 
     void Update()
