@@ -110,14 +110,16 @@ public class WaveManager : MonoBehaviour
         if (uiManager != null)
             uiManager.ShowWaveMessage("WAVE " + wave + " START!", 2f);
 
+        if (uiManager != null)
+            uiManager.ShowWaveText();
 
         Debug.Log("Wave " + wave + " started! Spawning " + toSpawn);
 
 
         StartCoroutine(SpawnEnemies());
 
-        if (uiManager != null)
-            uiManager.ShowWaveText();
+        // if (uiManager != null)
+        //     uiManager.ShowWaveText();
     }
 
     IEnumerator FadeInMusic()
