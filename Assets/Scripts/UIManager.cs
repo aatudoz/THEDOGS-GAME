@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Wave UI")]
     public TMP_Text waveText;
+    public TMP_Text waveWaveText;
 
     public TMP_Text NewWaveText;
 
@@ -156,14 +157,19 @@ public class UIManager : MonoBehaviour
         scoreUI.SetActive(false);
         pauseMenu.SetActive(true);
         AmmoTextCount.SetActive(false);
+
+        waveText.gameObject.SetActive(false);
+        waveWaveText.gameObject.SetActive(false);
         Time.timeScale = 0f; //stoppaa pelin
         isPaused = true;
     }
 
     public void ResumeGame()
-    {
+    {   
         pauseMenu.SetActive(false);
         AmmoTextCount.SetActive(true);
+        waveText.gameObject.SetActive(true);
+        waveWaveText.gameObject.SetActive(true);
         Time.timeScale = 1f; //jatkaa pelin
         isPaused = false;
         scoreUI.SetActive(true);
