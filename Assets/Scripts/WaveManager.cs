@@ -31,7 +31,7 @@ public class WaveManager : MonoBehaviour
     bool bossDone = false;
     bool gameStarted = false;
 
-    int[] waveCounts = new int[] { 40, 50, 20 };
+    int[] waveCounts = new int[] { 30, 30, 15 };
 
     void Start()
     {
@@ -125,7 +125,7 @@ public class WaveManager : MonoBehaviour
     IEnumerator FadeInMusic()
     {
         float startVolume = 0f;
-        float targetVolume = 1f;
+        float targetVolume = 0.12f;
         float elapsedTime = 0f;
 
         while (elapsedTime < musicFadeDuration)

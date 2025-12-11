@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Ammo UI")]
     public TMP_Text ammoText;
-    public Image reloadImage; // The circular image for reload animation
+    public Image reloadImage;
 
     private Gun playerGun;
     private float reloadStartTime;

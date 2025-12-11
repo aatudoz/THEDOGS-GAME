@@ -62,6 +62,8 @@ public class BossController : MonoBehaviour
 
         currentHealth = maxHealth;
         UpdateHealthBar();
+
+        uiManager = FindFirstObjectByType<UIManager>();
     }
 
     void Update()
@@ -241,11 +243,7 @@ public class BossController : MonoBehaviour
     {
         if (player == null) return;
 
-        Vector2 attackPosition = new Vector2(transform.position.x, transform.position.y);
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        DealDamage();
-
         if (distanceToPlayer <= attackRange)
         {
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
@@ -294,7 +292,6 @@ public class BossController : MonoBehaviour
 
         StartCoroutine(AddScoreWithDelay(0.3f, 150));
 
-        uiManager = FindFirstObjectByType<UIManager>();
         if (uiManager != null)
         {
             uiManager.ShowFloatingScore(transform.position, 150);
@@ -304,9 +301,12 @@ public class BossController : MonoBehaviour
 
         OnEnemyDeath?.Invoke();
 
-        Destroy(gameObject, 2f);
+        if (uiManager != null)
+        {
+            StartCoroutine(Victory());
+        }
 
-        Victory();
+        Destroy(gameObject, 3f);
     }
 
     private IEnumerator AddScoreWithDelay(float delay, int scoreAmount)
@@ -348,14 +348,13 @@ public class BossController : MonoBehaviour
         }
     }
 
-    public void Victory()
-    {
-        StartCoroutine(VictoryDelay());
-    }
-    
-    private IEnumerator VictoryDelay()
+    private IEnumerator Victory()
     {
         yield return new WaitForSeconds(2f);
-        uiManager.ShowVictoryScreen();
+
+        if (uiManager != null)
+        {
+            uiManager.ShowVictoryScreen();
+        }
     }
 }
