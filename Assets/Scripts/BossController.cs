@@ -15,7 +15,7 @@ public class BossController : MonoBehaviour
     [SerializeField] private float attackCooldown = 1f;
 
     [Header("Combat")]
-    [SerializeField] private int maxHealth = 50;
+    [SerializeField] private int maxHealth = 150;
     [SerializeField] private int attackDamage = 1;
 
     [Header("Boss Dash Attack")]
@@ -30,6 +30,10 @@ public class BossController : MonoBehaviour
     [Header("PowerUp Drop")]
     [SerializeField] private GameObject[] powerUps;
     [SerializeField] private float dropChance = 0.1f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip victorySound;
+    private AudioSource sfxSource;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -64,6 +68,10 @@ public class BossController : MonoBehaviour
         UpdateHealthBar();
 
         uiManager = FindFirstObjectByType<UIManager>();
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
+        sfxSource.volume = 1f;
     }
 
     void Update()
@@ -97,19 +105,19 @@ public class BossController : MonoBehaviour
     void CheckForDashAttack()
     {
         //Dash at 40hp
-        if (currentHealth <= 25 && !hasUsedFirstDash)
+        if (currentHealth <= 130 && !hasUsedFirstDash)
         {
             hasUsedFirstDash = true;
             StartCoroutine(DoDashAttack());
         }
         //Dash at 23hp
-        else if (currentHealth <= 15 && !hasUsedSecondDash)
+        else if (currentHealth <= 80 && !hasUsedSecondDash)
         {
             hasUsedSecondDash = true;
             StartCoroutine(DoDashAttack());
         }
         //Dash at 10hp
-        else if (currentHealth <= 6 && !hasUsedThirdDash)
+        else if (currentHealth <= 30 && !hasUsedThirdDash)
         {
             hasUsedThirdDash = true;
             StartCoroutine(DoDashAttack());
@@ -351,6 +359,12 @@ public class BossController : MonoBehaviour
     private IEnumerator Victory()
     {
         yield return new WaitForSeconds(2f);
+
+        //play victory sound
+        if (sfxSource != null && victorySound != null)
+        {
+            sfxSource.PlayOneShot(victorySound);
+        }
 
         if (uiManager != null)
         {

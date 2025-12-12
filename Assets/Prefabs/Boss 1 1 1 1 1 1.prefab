@@ -268,11 +268,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
   healthBarFill: {fileID: 8496587456918686052}
-  moveSpeed: 4
+  moveSpeed: 3.8
   detectionRange: 100
   attackRange: 1.4
   attackCooldown: 1
-  maxHealth: 20
+  maxHealth: 150
   attackDamage: 1
   dashSpeed: 15
   dashDistance: 8
@@ -283,6 +283,7 @@ MonoBehaviour:
     m_Bits: 128
   powerUps: []
   dropChance: 0.1
+  victorySound: {fileID: 8300000, guid: 96cf67a6ece67ff499c579bd308fea60, type: 3}
 --- !u!1 &4855738387904649789
 GameObject:
   m_ObjectHideFlags: 0
